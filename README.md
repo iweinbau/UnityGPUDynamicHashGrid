@@ -7,6 +7,10 @@ Particle positions are mapped to cells using spatial hashing. Where after partic
 ## Sorting
 Bitonic Merge Sort is used to sort particles based on their cell index [3]. This algoritm has been implemented on the GPU using a compute shader.
 
+## Example
+![Hash grid example](https://github.com/iweinbau/UnityGPUDynamicHashGrid/blob/main/Img/HashGridExample.PNG?raw=true)
+Image showing in blue the visited neigbor cell particles, in red the particles in the same cell and black all other particles. Note since we map an infinit space in finite memory some non neigbouring cells can be mapped to the same bucket (see blue region in the top right of the immage).
+
 ## How to use
 To start using Hashed grids in your own project you need to implement the abstract `DynamicHashGrid` class. Next you can initialize by calling `InitHashGrid();`. 
 Last step involves to include the `DynamicGridHashingUtils.hlsl` in your particle processing compute shader and implement a kernel for hasing your particle positions.
