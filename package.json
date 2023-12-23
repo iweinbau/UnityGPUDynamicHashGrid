@@ -1,0 +1,19 @@
+{
+  "name": "iweinbau.dynamicgridhashing",
+  "version": "1.0.0",
+  "displayName": "Dynamic GPU Grid Hashing",
+  "description": "Dynamic Grid Hasking for fast neighbor search on the GPU",
+  "dependencies": {
+
+  },
+  "author": {
+    "name": "Iwein Bau"
+  },
+  "samples": [
+    {
+      "displayName": "Dynamic Hash Grid Examples",
+      "description": "Example on how to use the dynamic hash grid",
+      "path": "Samples~/Example"
+    }
+  ]
+}

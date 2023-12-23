@@ -1,0 +1,16 @@
+{
+    "name": "iweinbau.DynamicGridHashing.Example",
+    "rootNamespace": "",
+    "references": [
+        "GUID:4a91563076cdcc64095e6ecd6311198e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

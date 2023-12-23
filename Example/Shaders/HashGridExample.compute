@@ -1,0 +1,70 @@
+#pragma kernel CSMain
+#pragma kernel HashData
+
+struct DataPoint
+{
+    float3 position;
+    float3 color;
+};
+
+float cellSize;
+uint target;
+uint dataCount;
+RWStructuredBuffer<DataPoint> dataBuffer;
+
+// Dynamic hash grid
+#include "../../Runtime/Compute/DynamicGridHashingUtils.hlsl"
+
+[numthreads(256, 1, 1)]
+void HashData(uint3 id : SV_DispatchThreadID)
+{
+    uint index = _IndexBuffer[id.x];
+    float3 pos = dataBuffer[index].position;
+    int3 cellIndex = CellIndex(pos, cellSize);
+    uint flatCellIndex = GetFlatCellIndex(cellIndex, dataCount);
+    _CellIndexBuffer[index] = flatCellIndex;
+}
+
+[numthreads(256,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    uint index = _IndexBuffer[id.x];
+
+    dataBuffer[index].color = float3(0, 0, 0);
+
+    if (index != target) return;
+
+    dataBuffer[index].color = float3(0, 1, 0);
+    int3 cellIndex = CellIndex(dataBuffer[index].position, cellSize);
+
+    for (int i = -1; i <= 1; ++i)
+    {
+        for (int j = -1; j <= 1; ++j)
+        {
+            for (int k = -1; k <= 1; ++k)
+            {
+                int3 neighborIndex = cellIndex + int3(i, j, k);
+                uint flatNeighborIndex = GetFlatCellIndex(neighborIndex, dataCount);
+                uint neighborIterator = _OffsetsBuffer[flatNeighborIndex];
+
+                while (neighborIterator < dataCount)
+                {
+                    uint otherIndex = _IndexBuffer[neighborIterator];
+                    neighborIterator++;  // iterate...
+
+                    if (_CellIndexBuffer[otherIndex] != flatNeighborIndex)
+                    {
+                        break;  // it means we stepped out of the neighbour cell list!
+                    }
+                    
+                    if (otherIndex == target) continue;
+
+                    if (i==0 && j==0 && k==0)
+                        dataBuffer[otherIndex].color = float3(1, 0, 0);
+                    else
+                        dataBuffer[otherIndex].color = float3(0, 0, 1);
+                }
+            }
+        }
+    }
+}

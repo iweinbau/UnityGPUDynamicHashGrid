@@ -1,0 +1,45 @@
+#pragma kernel ClearCellOffsets
+#pragma kernel CalculateCellOffsets
+#pragma kernel BitonicSort
+
+#include "../Runtime/Compute/DynamicGridHashingUtils.hlsl"
+
+void swap(uint i, uint j, uint key_i, uint key_j)
+{
+	_IndexBuffer[i] = key_j;
+	_IndexBuffer[j] = key_i;
+}
+
+[numthreads(256, 1, 1)]
+void ClearCellOffsets(uint3 id: SV_DISPATCHTHREADID) {
+	_OffsetsBuffer[id.x] = UINT32_MAX;
+}
+
+[numthreads(256, 1, 1)]
+void CalculateCellOffsets(uint3 id: SV_DISPATCHTHREADID) {
+    uint index = _IndexBuffer[id.x]; // Get the index of the data in the CellIndexBuffer
+    uint cellIndex = _CellIndexBuffer[index]; // Get the cell of the data
+    InterlockedMin(_OffsetsBuffer[cellIndex], id.x); // set the the the minimum value
+}
+
+int j;
+int k;
+uint size;
+#define GROUP_SIZE 512
+[numthreads(GROUP_SIZE, 1, 1)]
+void BitonicSort(uint3 id : SV_DispatchThreadID) {
+	uint i = id.x;
+	uint ixj = i ^ j;
+
+	if (ixj < i || i >= size)
+		return;
+
+	uint key_i = _IndexBuffer[i];
+	uint key_ixj = _IndexBuffer[ixj];
+	float value_i = _CellIndexBuffer[key_i];
+	float value_ixj = _CellIndexBuffer[key_ixj];
+
+	float diff = (value_i - value_ixj) * ((i & k) == 0 ? 1 : -1);
+	if ((i&k)==0 && value_i>value_ixj) swap(i, ixj, key_i, key_ixj);
+	if ((i&k)!=0 && value_i<value_ixj) swap(i, ixj, key_i, key_ixj);
+}
