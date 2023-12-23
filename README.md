@@ -9,6 +9,7 @@ Bitonic Merge Sort is used to sort particles based on their cell index [3]. This
 
 ## Example
 ![Hash grid example](https://github.com/iweinbau/UnityGPUDynamicHashGrid/blob/main/Img/HashGridExample.PNG?raw=true)
+
 Image showing in blue the visited neigbor cell particles, in red the particles in the same cell and black all other particles. Note since we map an infinit space in finite memory some non neigbouring cells can be mapped to the same bucket (see blue region in the top right of the immage).
 
 ## How to use
@@ -77,6 +78,9 @@ for (int i = -1; i <= 1; ++i)
     }
 }
 ```
+
+## Installing
+To install the package in unity you can import it using the git url `https://github.com/iweinbau/UnityGPUDynamicHashGrid.git`
 
 [[1] Fast Fixed-Radius Nearest Neighbor Search on the GPU](https://on-demand.gputechconf.com/gtc/2014/presentations/S4117-fast-fixed-radius-nearest-neighbor-gpu.pdf)
 
