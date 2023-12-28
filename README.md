@@ -1,16 +1,17 @@
+
 # Dynamic Hash Grid on GPU
 
 ## Uniform hashed Grid
-This projects implements a dynamic hash grid on the GPU. Dynamic meaning that the grid size and dimensions are not given. This type of data representation is ideal for a fast fixed-readius search of particles [1]. 
+This projects implements a dynamic hash grid on the GPU. Dynamic meaning that the grid size and dimensions are not given. This type of data representation is ideal for a fast fixed-radius search of particles [1]. 
 Particle positions are mapped to cells using spatial hashing. Where after particels are sorted based on there cell. Doing so result in particles in the same cell beeing next to each other [2].
 
 ## Sorting
-Bitonic Merge Sort is used to sort particles based on their cell index [3]. This algoritm has been implemented on the GPU using a compute shader.
+Bitonic Merge Sort is used to sort particles based on their cell index [3]. This algorithm has been implemented on the GPU using a compute shader.
 
 ## Example
 ![Hash grid example](https://github.com/iweinbau/UnityGPUDynamicHashGrid/blob/main/Img/HashGridExample.PNG?raw=true)
 
-Image showing in blue the visited neigbor cell particles, in red the particles in the same cell and black all other particles. Note since we map an infinit space in finite memory some non neigbouring cells can be mapped to the same bucket (see blue region in the top right of the immage).
+Image showing in blue the visited neighbor cell particles, in red the particles in the same cell and black all other particles. Note since we map an infinite space in finite memory some non neighboring cells can be mapped to the same bucket (see blue region in the top right of the image).
 
 ## How to use
 To start using Hashed grids in your own project you need to implement the abstract `DynamicHashGrid` class. Next you can initialize by calling `InitHashGrid();`. 
@@ -32,7 +33,7 @@ void HashData(uint3 id : SV_DispatchThreadID)
 }
 ```
 
-Now you are ready to start using hashing grids, before you dispatch your procesing kernels you need to sort call the reset and sort functions. See code below to see an example update step
+Now you are ready to start using hashing grids, before you dispatch your processing kernels you need to sort call the reset and sort functions. See code below to see an example update step
 ```c#
 private void Update()
 {
@@ -53,7 +54,7 @@ private void Update()
 }
 ```
 
-To efficiently iterate over the neigbour cells in your proccesing kernels
+To efficiently iterate over the neighbor cells in your processing kernels
 ```c
 int3 currentCellIndex = CellIndex(dataBuffer[index].position, cellSize);
 for (int i = -1; i <= 1; ++i)
