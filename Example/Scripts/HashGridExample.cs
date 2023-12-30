@@ -33,10 +33,6 @@ public class HashGridExample : DynamicHashGrid
 
     private void Update()
     {
-        uint[] indices = new uint[m_size];
-        uint[] cellIndices = new uint[m_size];
-        uint[] cellOffset = new uint[m_size];
-
         dataProcessingCS.SetInt("dataCount", m_size);
         dataProcessingCS.SetFloat("cellSize", cellSize);
         dataProcessingCS.SetInt("target", (int)target);
@@ -44,17 +40,9 @@ public class HashGridExample : DynamicHashGrid
         ClearOffsetBuffer();
         DispatchKernel(dataProcessingCS, hashDataKernelID, m_size);
 
-        indexBuffer.GetData(indices);
-        cellIndexBuffer.GetData(cellIndices);
-        cellOffsetBuffer.GetData(cellOffset);
-
         Sort();
         CalculateOffsets();
         DispatchKernel(dataProcessingCS, mainKernelID, m_size);
-
-        indexBuffer.GetData(indices);
-        cellIndexBuffer.GetData(cellIndices);
-        cellOffsetBuffer.GetData(cellOffset);
     }
 
     private void OnDestroy()
