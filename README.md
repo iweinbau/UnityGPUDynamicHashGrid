@@ -83,6 +83,7 @@ for (int i = -1; i <= 1; ++i)
 ## Installing
 To install the package in unity you can import it using the git url `https://github.com/iweinbau/UnityGPUDynamicHashGrid.git`
 
+## References
 [[1] Fast Fixed-Radius Nearest Neighbor Search on the GPU](https://on-demand.gputechconf.com/gtc/2014/presentations/S4117-fast-fixed-radius-nearest-neighbor-gpu.pdf)
 
 [[2] Particle-based Fluid Simulation based Fluid Simulation](https://developer.download.nvidia.com/presentations/2008/GDC/GDC08_ParticleFluids.pdf)
