@@ -1,4 +1,4 @@
-Shader "Instanced/Particle3DSurf" {
+Shader "Instanced/DataPoint" {
 	Properties{
 		_MainTex("Albedo (RGB)", 2D) = "white" {}
 		_Glossiness("Smoothness", Range(0,1)) = 0.5
@@ -21,7 +21,7 @@ Shader "Instanced/Particle3DSurf" {
 				float3 worldPos;
 			};
 
-			// Particles
+			// DataPoint
 			struct DataPoint {
 				float3 position;
 				float3 color;
